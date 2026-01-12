@@ -1,0 +1,194 @@
+---
+- name: Installer et configurer Nginx
+  hosts: webservers
+  become: yes
+  
+  tasks:
+    - name: Mettre à jour le cache APT
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+      
+    - name: Installer Nginx
+      apt:
+        name: nginx
+        state: present
+        
+    - name: S'assurer que Nginx est démarré et activé
+      systemd:
+        name: nginx
+        state: started
+        enabled: yes
+        
+    - name: Créer la page web personnalisée
+      copy:
+        dest: /var/www/html/index.html
+        content: |
+          <!DOCTYPE html>
+          <html lang="fr">
+          <head>
+              <meta charset="UTF-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <title>Projet Cloud Computing - Université Abdelmalek Essaadi</title>
+              <style>
+                  * {
+                      margin: 0;
+                      padding: 0;
+                      box-sizing: border-box;
+                  }
+                  body {
+                      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                      min-height: 100vh;
+                      display: flex;
+                      justify-content: center;
+                      align-items: center;
+                      padding: 20px;
+                  }
+                  .container {
+                      background: white;
+                      border-radius: 20px;
+                      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+                      max-width: 800px;
+                      padding: 40px;
+                      animation: fadeIn 1s ease-in;
+                  }
+                  @keyframes fadeIn {
+                      from { opacity: 0; transform: translateY(-20px); }
+                      to { opacity: 1; transform: translateY(0); }
+                  }
+                  h1 {
+                      color: #667eea;
+                      margin-bottom: 20px;
+                      font-size: 2.5em;
+                      text-align: center;
+                  }
+                  h2 {
+                      color: #764ba2;
+                      margin-top: 30px;
+                      margin-bottom: 15px;
+                      border-left: 4px solid #667eea;
+                      padding-left: 15px;
+                  }
+                  .info-box {
+                      background: #f8f9fa;
+                      border-left: 4px solid #667eea;
+                      padding: 15px;
+                      margin: 15px 0;
+                      border-radius: 5px;
+                  }
+                  .info-box strong {
+                      color: #764ba2;
+                  }
+                  ul {
+                      list-style-position: inside;
+                      margin: 10px 0;
+                      padding-left: 20px;
+                  }
+                  li {
+                      margin: 8px 0;
+                      color: #555;
+                  }
+                  .success {
+                      background: #d4edda;
+                      color: #155724;
+                      padding: 15px;
+                      border-radius: 10px;
+                      text-align: center;
+                      margin: 20px 0;
+                      font-weight: bold;
+                  }
+                  .footer {
+                      margin-top: 30px;
+                      text-align: center;
+                      color: #888;
+                      font-size: 0.9em;
+                  }
+                  .tech-stack {
+                      display: flex;
+                      justify-content: space-around;
+                      flex-wrap: wrap;
+                      margin: 20px 0;
+                  }
+                  .tech-item {
+                      background: #667eea;
+                      color: white;
+                      padding: 10px 20px;
+                      border-radius: 25px;
+                      margin: 5px;
+                      font-weight: bold;
+                  }
+              </style>
+          </head>
+          <body>
+              <div class="container">
+                  <h1>🎓 Projet Cloud Computing</h1>
+                  
+                  <div class="success">
+                      ✅ Déploiement réussi avec Terraform & Ansible !
+                  </div>
+                  
+                  <h2>📋 Informations du Projet</h2>
+                  <div class="info-box">
+                      <strong>Université:</strong> Abdelmalek Essaadi<br>
+                      <strong>Matière:</strong> Cloud Computing<br>
+                      <strong>Professeur:</strong> C. EL AMRANI
+                  </div>
+                  
+                  <h2>🛠️ Technologies Utilisées</h2>
+                  <div class="tech-stack">
+                      <span class="tech-item">OpenStack</span>
+                      <span class="tech-item">Terraform</span>
+                      <span class="tech-item">Ansible</span>
+                      <span class="tech-item">Nginx</span>
+                      <span class="tech-item">Ubuntu</span>
+                  </div>
+                  
+                  <h2>✨ Fonctionnalités Implémentées</h2>
+                  <ul>
+                      <li>✅ Infrastructure as Code avec Terraform</li>
+                      <li>✅ Provisionnement automatisé avec Ansible</li>
+                      <li>✅ Serveur web Nginx configuré</li>
+                      <li>✅ Authentification SSH par mot de passe</li>
+                      <li>✅ Groupes de sécurité (SSH, HTTP, HTTPS, ICMP)</li>
+                      <li>✅ Double interface réseau (test + external)</li>
+                  </ul>
+                  
+                  <h2>🌐 Configuration Réseau</h2>
+                  <div class="info-box">
+                      <strong>Réseau Test:</strong> 10.20.20.0/24<br>
+                      <strong>Réseau External:</strong> 192.168.222.0/24<br>
+                      <strong>Serveur:</strong> Nginx sur Ubuntu<br>
+                      <strong>Ports Ouverts:</strong> 22 (SSH), 80 (HTTP), 443 (HTTPS)
+                  </div>
+                  
+                  <div class="footer">
+                      <p>Déployé automatiquement via Ansible Playbook</p>
+                      <p>Projet Cloud Computing - 2024/2025</p>
+                  </div>
+              </div>
+          </body>
+          </html>
+        mode: '0644'
+        
+    - name: Redémarrer Nginx pour appliquer les changements
+      systemd:
+        name: nginx
+        state: restarted
+        
+    - name: Vérifier que Nginx écoute sur le port 80
+      wait_for:
+        port: 80
+        timeout: 30
+        
+    - name: Afficher le statut de Nginx
+      command: systemctl status nginx
+      register: nginx_status
+      changed_when: false
+      
+    - name: Afficher les informations
+      debug:
+        msg: 
+          - "✅ Nginx installé et configuré avec succès!"
+          - "🌐 Page web déployée"
+          - "📍 Accédez à votre site via: http://{{ ansible_host }}"

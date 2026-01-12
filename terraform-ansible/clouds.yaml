@@ -1,0 +1,11 @@
+clouds:
+  microstack:
+    auth:
+      auth_url: http://10.20.20.1:5000/v3
+      username: admin
+      password: keystone
+      project_name: admin
+      user_domain_name: Default
+      project_domain_name: Default
+    region_name: microstack
+    identity_api_version: 3

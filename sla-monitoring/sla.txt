@@ -1,0 +1,44 @@
+===============================================
+SERVICE LEVEL AGREEMENT (SLA)
+OpenStack Instance Availability Monitoring
+===============================================
+
+Provider: Université Abdelmalek Essaadi - Cloud Infrastructure
+Service: OpenStack IaaS Platform
+Effective Date: 2026-01-12
+Review Period: Daily
+
+-----------------------------------------------
+1. SERVICE DESCRIPTION
+-----------------------------------------------
+This SLA governs the availability monitoring of OpenStack instances
+deployed on the university's private cloud infrastructure.
+
+-----------------------------------------------
+2. PERFORMANCE METRICS
+-----------------------------------------------
+Metric: Instance Availability
+Target: 99.5% uptime
+Measurement Period: Daily (24 hours)
+Monitoring Frequency: Every 5 minutes (288 checks per day)
+
+-----------------------------------------------
+3. AVAILABILITY CALCULATION
+-----------------------------------------------
+Availability (%) = (Total Uptime / Total Monitoring Time) × 100
+
+Acceptable Downtime per Day: 7.2 minutes maximum
+(0.5% of 1440 minutes)
+
+-----------------------------------------------
+4. MONITORING REPORTS
+-----------------------------------------------
+Date                | Availability | Status    | Downtime
+--------------------|--------------|-----------|----------
+[Reports will be automatically appended below]
+2026-01-12 03:01    | ubuntu-nginx-password | 100.00%     | COMPLIANT [OK]  |   0.00 min
+2026-01-12 03:01    | ubuntu-vm            | 100.00%     | COMPLIANT [OK]  |   0.00 min
+2026-01-12 03:01    | cirros-vm            |  80.00%     | VIOLATION [KO]  |   5.00 min
+2026-01-12 03:01    | ubuntu-nginx-password | 100.00%     | COMPLIANT [OK]  |   0.00 min
+2026-01-12 03:01    | ubuntu-vm            | 100.00%     | COMPLIANT [OK]  |   0.00 min
+2026-01-12 03:01    | cirros-vm            |  80.00%     | VIOLATION [KO]  |   5.00 min
